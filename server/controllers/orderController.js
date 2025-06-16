@@ -179,7 +179,7 @@ export const getUserOrders = async(req,res)=>{
         const userId = req.userId;
         const orders = await Order.find({
             userId,
-            $or:[{paymentType : "COD"} ,{paymentType : "Online"} ]
+            $or:[{paymentType : "COD"} , {isPaid : true} ]
         }).populate("items.product address").sort({createdAt : -1});
         res.json({success : true ,orders});
     } catch (error) {
@@ -193,7 +193,7 @@ export const getUserOrders = async(req,res)=>{
 export const getAllOrders = async(req,res)=>{
     try {
         const orders = await Order.find({
-            $or:[{paymentType : "COD"} , {isPaid : true}]
+            $or:[{paymentType : "COD"},{paymentType : "Online"} ]
         }).populate("items.product address").sort({createdAt : -1});
         res.json({success : true ,orders});
     } catch (error) {
