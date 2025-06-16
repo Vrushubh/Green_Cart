@@ -14,27 +14,30 @@ import { stripeWebhooks } from './controllers/orderController.js';
 
 const app = express();
 
-const port = process.env.PORT || 4000;
-await connectDB()
-await connectCloudinary()
+// Connect to DB and cloudinary
+await connectDB();
+await connectCloudinary();
 
-const allowedOrigins = ['http://localhost:5173'] 
+// Stripe webhook (must come first!)
+app.post('/stripe', express.raw({ type: 'application/json' }), stripeWebhooks);
 
-app.post('/stripe' , express.raw({type : 'application/json'}),stripeWebhooks)
-//MIDDLEWARE CONFIGURATION
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin: allowedOrigins , credentials: true}));
+app.use(cors({
+  origin: ['http://localhost:5173'], // update this in production
+  credentials: true,
+}));
 
-app.get('/',(req,res)=>{res.send("API is working")})
-app.use('/api/user',userRouter);
-app.use('/api/seller',sellerRouter);
-app.use('/api/product',productRouter);
-app.use('/api/cart' , cartRouter);
-app.use('/api/address' , addressRouter);
-app.use('/api/order',orderRouter);
+// Routes
+app.get('/', (req, res) => res.send("API is working"));
+app.use('/api/user', userRouter);
+app.use('/api/seller', sellerRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/address', addressRouter);
+app.use('/api/order', orderRouter);
 
-app.listen(port , ()=>{
-    console.log(`Server is running on http://localhost:${port}`);
-    
-})
+// ❌ DON'T USE: app.listen()
+// ✅ INSTEAD, EXPORT the app:
+export default app;
