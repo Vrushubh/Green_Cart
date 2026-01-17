@@ -28,7 +28,19 @@ app.post('/stripe' , express.raw({type : 'application/json'}),stripeWebhooks)
 //MIDDLEWARE CONFIGURATION
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin: allowedOrigins , credentials: true}));
+app.use(cors({
+  origin: "https://green-cart-three-self.vercel.app",
+  credentials: true,
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+}));
+
+app.options("*", cors({
+  origin: "https://green-cart-three-self.vercel.app",
+  credentials: true,
+}));
+
+
 
 app.get('/',(req,res)=>{res.send("API is working")})
 app.use('/api/user',userRouter);
