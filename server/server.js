@@ -31,7 +31,8 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     "https://green-cart-three-self.vercel.app",
-    "https://green-cart-qcpm.vercel.app"
+    "https://green-cart-qcpm.vercel.app",
+    "https://green-cart-4luw.onrender.com"
   ],
   credentials: true,
   methods: ["GET","POST","PUT","DELETE","OPTIONS"],
