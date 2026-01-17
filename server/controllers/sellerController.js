@@ -9,8 +9,10 @@ export const sellerlogin = async(req,res)=>{
 
             res.cookie('sellerToken',token,{
             httpOnly : true, //PREVENT JAVASCRIPT TO ACCESS COOKIE
-            secure : process.env.NODE_ENV === 'production',  //USE SECURE COOKIE IN PRODUCTION
-            sameSite : process.env.NODE_ENV === 'production' ? 'none' : 'strict' , //CSRF PROTECTION
+            secure : true,  //USE SECURE COOKIE IN PRODUCTION
+            sameSite : "none" ,//CSRF PROTECTION
+            domain: ".onrender.com",     // 🔥 REQUIRED
+            path: "/",
             maxAge : 7*24*60*60*1000,
             });
             return res.json({success: true ,message : "Logged In"})
@@ -27,21 +29,33 @@ export const sellerlogin = async(req,res)=>{
 
 // Seller isAuth : /api/seller/is-auth
 
-export const isSellerAuth = async(req,res)=>{
-    try {
-        return res.json({success : true})
-    } catch (error) {
-        console.log(error.message);
-        res.json({success: false , message: error.message});
+export const isSellerAuth = async (req, res) => {
+  const { sellerToken } = req.cookies;
+
+  if (!sellerToken) return res.json({ success: false });
+
+  try {
+    const decoded = jwt.verify(sellerToken, process.env.JWT_SECRET);
+
+    if (decoded.email === process.env.SELLER_EMAIL) {
+      return res.json({ success: true });
     }
-}
+
+    return res.json({ success: false });
+  } catch {
+    return res.json({ success: false });
+  }
+};
+
 
 export const sellerLogout = async(req,res)=>{
     try {
-        res.clearCookie('sellertoken',{
-            httpOnly : true, //PREVENT JAVASCRIPT TO ACCESS COOKIE
-            secure : process.env.NODE_ENV === 'production',  //USE SECURE COOKIE IN PRODUCTION
-            sameSite : process.env.NODE_ENV === 'production' ? 'none' : 'strict' , //CSRF PROTECTION
+        res.clearCookie('sellerToken',{
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            domain: ".onrender.com",
+            path: "/",
         });
         return res.json({success : true , message : "Logged Out"})
     } catch (error) {
