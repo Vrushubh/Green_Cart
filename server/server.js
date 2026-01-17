@@ -35,10 +35,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type","Authorization"],
 }));
 
-app.options("*", cors({
-  origin: "https://green-cart-three-self.vercel.app",
-  credentials: true,
-}));
 
 
 
