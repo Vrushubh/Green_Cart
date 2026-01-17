@@ -29,7 +29,10 @@ app.post('/stripe' , express.raw({type : 'application/json'}),stripeWebhooks)
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://green-cart-three-self.vercel.app",
+  origin: [
+    "https://green-cart-three-self.vercel.app",
+    "https://green-cart-qcpm.vercel.app"
+  ],
   credentials: true,
   methods: ["GET","POST","PUT","DELETE","OPTIONS"],
   allowedHeaders: ["Content-Type","Authorization"],
