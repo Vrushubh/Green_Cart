@@ -54,7 +54,6 @@ export const sellerLogout = async(req,res)=>{
             httpOnly: true,
             secure: true,
             sameSite: "none",
-            domain: ".onrender.com",
             path: "/",
         });
         return res.json({success : true , message : "Logged Out"})
