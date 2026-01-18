@@ -13,7 +13,7 @@ const SellerLogin = () => {
           const {data} = await axios.post('/api/seller/login',{email,password})
           if(data.success){
             setIsSeller(true)
-            navigate('/seller')
+            navigate('/seller',{replace:true});
           }
           else{
             toast.error(data.message)
