@@ -10,8 +10,7 @@ export const sellerlogin = async(req,res)=>{
             res.cookie('sellerToken',token,{
             httpOnly : true, //PREVENT JAVASCRIPT TO ACCESS COOKIE
             secure : true,  //USE SECURE COOKIE IN PRODUCTION
-            sameSite : "none" ,//CSRF PROTECTION
-            domain: ".onrender.com",     // 🔥 REQUIRED
+            sameSite : "none" ,//CSRF PROTECTION     // 🔥 REQUIRED
             path: "/",
             maxAge : 7*24*60*60*1000,
             });
