@@ -1,0 +1,6 @@
+{
+  "routes": [
+    { "src": "/api/(.*)", "dest": "https://green-cart-1-ginv.onrender.com/api/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
